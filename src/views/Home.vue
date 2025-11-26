@@ -67,8 +67,6 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
 import DayButton from '../components/DayButton.vue'
 import CountdownTimer from '../components/CountdownTimer.vue'
-
 </script>

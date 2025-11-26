@@ -7,13 +7,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const countdown = ref('00H : 00M : 00S')
+const countdown = ref<string>('00H : 00M : 00S')
 
 // Update countdown every second
-let countdownInterval
+let countdownInterval: ReturnType<typeof setInterval> | undefined
 
 onMounted(() => {
   const updateCountdown = () => {
@@ -44,8 +44,7 @@ onMounted(() => {
       // During December 1-24 - count down to next day at midnight UTC
       targetDate = Date.UTC(targetYear, 11, currentDate + 1, 0, 0, 0)
     } else if (currentMonth === 11 && currentDate === 25) {
-      // On December 25th - check if we're past midnight UTC
-      const dec25Start = Date.UTC(targetYear, 11, 25, 0, 0, 0)
+      // On December 25th - count down to Dec 26 (event end)
       const dec26Start = Date.UTC(targetYear, 11, 26, 0, 0, 0)
       
       if (nowUTC < dec26Start) {

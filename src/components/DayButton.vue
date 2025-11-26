@@ -18,11 +18,8 @@
   </router-link>
 </template>
 
-<script setup>
-defineProps({
-  day: {
-    type: Number,
-    required: true
-  }
-})
+<script setup lang="ts">
+defineProps<{
+  day: number
+}>()
 </script>
