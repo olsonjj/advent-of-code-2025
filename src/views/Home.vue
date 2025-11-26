@@ -39,7 +39,7 @@
 
       <!-- Main Grid Container -->
       <div class="flex justify-center">
-        <div class="border-4 border-[#00ff41] bg-[#0a0e1a]/80 p-6 relative">
+        <div class="border-4 border-[#00ff41] bg-[#0a0e1a]/80 p-8 relative">
         <!-- Circuit decorations on border -->
         <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
           <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
