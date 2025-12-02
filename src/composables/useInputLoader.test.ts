@@ -101,28 +101,21 @@ describe('useInputLoader', () => {
     const networkError = new Error('Network failure')
     mockFetch.mockRejectedValueOnce(networkError)
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const { result } = mountComposable('test.txt')
     
     await vi.waitFor(() => expect(result.error.value).not.toBe(null))
 
     expect(result.error.value).toBe('Network failure')
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading input file:', networkError)
-    
-    consoleErrorSpy.mockRestore()
   })
 
   it('should handle non-Error exceptions', async () => {
     mockFetch.mockRejectedValueOnce('String error')
 
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const { result } = mountComposable('test.txt')
     
     await vi.waitFor(() => expect(result.error.value).not.toBe(null))
 
     expect(result.error.value).toBe('Unknown error occurred')
-    
-    consoleErrorSpy.mockRestore()
   })
 
   it('should allow manual reload via loadInput', async () => {

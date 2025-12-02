@@ -25,7 +25,6 @@ export function useInputLoader(filename: string) {
       input.value = text
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Unknown error occurred'
-      console.error('Error loading input file:', err)
     } finally {
       loading.value = false
     }

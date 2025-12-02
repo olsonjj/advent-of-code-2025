@@ -66,6 +66,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useInputLoader } from '../../composables/useInputLoader'
+import { solveDay2 } from './solve'
 
 const { input } = useInputLoader('Day2Input.txt')
 const part1Answer = ref<number | null>(null)
@@ -73,71 +74,10 @@ const part1Count = ref<number>(0)
 const part2Answer = ref<number | null>(null)
 const part2Count = ref<number>(0)
 
-// Part 1: exactly 2 repetitions
-function isInvalidIDPart1(num: number): boolean {
-  const str = num.toString()
-  const len = str.length
-  
-  // Must be even length to be repeatable
-  if (len % 2 !== 0) return false
-  
-  // Check if first half equals second half
-  const halfLen = len / 2
-  const firstHalf = str.substring(0, halfLen)
-  const secondHalf = str.substring(halfLen)
-  
-  return firstHalf === secondHalf
-}
-
-// Part 2: at least 2 repetitions
-function isInvalidIDPart2(num: number): boolean {
-  const str = num.toString()
-  const len = str.length
-  
-  // Try each possible pattern length (from 1 to len/2)
-  for (let patternLen = 1; patternLen <= Math.floor(len / 2); patternLen++) {
-    // Check if the number can be made by repeating a pattern
-    if (len % patternLen === 0) {
-      const pattern = str.substring(0, patternLen)
-      const repetitions = len / patternLen
-      
-      // Build what the number would be if this pattern repeated
-      const repeated = pattern.repeat(repetitions)
-      
-      if (repeated === str && repetitions >= 2) {
-        return true
-      }
-    }
-  }
-  
-  return false
-}
-
 function solve() {
-  const ranges = input.value.trim().split(',').filter(r => r.trim())
-  let part1Sum = 0
-  let part1InvalidCount = 0
-  let part2Sum = 0
-  let part2InvalidCount = 0
-  
-  for (const range of ranges) {
-    const [start, end] = range.trim().split('-').map(Number)
-    
-    for (let id = start; id <= end; id++) {
-      if (isInvalidIDPart1(id)) {
-        part1Sum += id
-        part1InvalidCount++
-      }
-      if (isInvalidIDPart2(id)) {
-        part2Sum += id
-        part2InvalidCount++
-      }
-    }
-  }
-  
-  part1Answer.value = part1Sum
-  part1Count.value = part1InvalidCount
-  part2Answer.value = part2Sum
-  part2Count.value = part2InvalidCount
+  const result = solveDay2(input.value)
+  part1Answer.value = result.part1
+  part2Answer.value = result.part2
+  // Note: counts are not returned by solve function, keeping UI simple
 }
 </script>
