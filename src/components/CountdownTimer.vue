@@ -41,8 +41,16 @@ onMounted(() => {
       // This shouldn't happen, but just in case
       targetDate = Date.UTC(targetYear, 11, 1, 5, 0, 0)
     } else if (currentMonth === 11 && currentDate >= 1 && currentDate < 25) {
-      // During December 1-24 - count down to next day at midnight EST (5 AM UTC)
-      targetDate = Date.UTC(targetYear, 11, currentDate + 1, 5, 0, 0)
+      // During December 1-24 - check if today's puzzle has unlocked yet
+      const todaysPuzzle = Date.UTC(targetYear, 11, currentDate, 5, 0, 0)
+      
+      if (nowUTC < todaysPuzzle) {
+        // Today's puzzle hasn't unlocked yet - count down to today at 5 AM UTC
+        targetDate = todaysPuzzle
+      } else {
+        // Today's puzzle has unlocked - count down to tomorrow at 5 AM UTC
+        targetDate = Date.UTC(targetYear, 11, currentDate + 1, 5, 0, 0)
+      }
     } else if (currentMonth === 11 && currentDate === 25) {
       // On December 25th - count down to Dec 26 (event end)
       const dec26Start = Date.UTC(targetYear, 11, 26, 5, 0, 0)
