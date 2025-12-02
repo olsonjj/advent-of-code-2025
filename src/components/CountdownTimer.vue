@@ -35,17 +35,17 @@ onMounted(() => {
     let targetDate
     
     if (currentMonth < 11) {
-      // Before December - count down to Dec 1st
-      targetDate = Date.UTC(targetYear, 11, 1, 0, 0, 0) // December 1st at midnight UTC
+      // Before December - count down to Dec 1st at midnight EST (5 AM UTC)
+      targetDate = Date.UTC(targetYear, 11, 1, 5, 0, 0) // December 1st at midnight EST
     } else if (currentMonth === 11 && currentDate < 1) {
       // This shouldn't happen, but just in case
-      targetDate = Date.UTC(targetYear, 11, 1, 0, 0, 0)
+      targetDate = Date.UTC(targetYear, 11, 1, 5, 0, 0)
     } else if (currentMonth === 11 && currentDate >= 1 && currentDate < 25) {
-      // During December 1-24 - count down to next day at midnight UTC
-      targetDate = Date.UTC(targetYear, 11, currentDate + 1, 0, 0, 0)
+      // During December 1-24 - count down to next day at midnight EST (5 AM UTC)
+      targetDate = Date.UTC(targetYear, 11, currentDate + 1, 5, 0, 0)
     } else if (currentMonth === 11 && currentDate === 25) {
       // On December 25th - count down to Dec 26 (event end)
-      const dec26Start = Date.UTC(targetYear, 11, 26, 0, 0, 0)
+      const dec26Start = Date.UTC(targetYear, 11, 26, 5, 0, 0)
       
       if (nowUTC < dec26Start) {
         // Still on Dec 25th in UTC
