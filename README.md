@@ -2,6 +2,8 @@
 
 My solutions to [Advent of Code 2025](https://adventofcode.com/2025) challenges, built with Vue 3 + TypeScript and a visual interface.
 
+![Advent of Code 2025 Homepage](homepage-screenshot.png)
+
 ## Project Overview
 
 This project provides a modern, interactive way to solve and visualize Advent of Code puzzles. Each day's challenge is implemented as a pure TypeScript solution with comprehensive tests, then wrapped in a Vue 3 UI for easy interaction.
