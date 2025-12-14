@@ -53,7 +53,7 @@
             v-for="day in 25"
             :key="day"
             :day="day"
-            :completed="day <= 7"
+            :completed="day <= 8"
           />
         </div>
         </div>
