@@ -50,10 +50,10 @@
 
         <div class="grid grid-cols-5 gap-4 gap-x-4">
           <DayButton
-            v-for="day in 25"
+            v-for="day in 12"
             :key="day"
             :day="day"
-            :completed="day <= 8"
+            :completed="true"
           />
         </div>
         </div>

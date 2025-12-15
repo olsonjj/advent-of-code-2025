@@ -12,19 +12,6 @@ import Day9 from '../views/day9/Day9.vue'
 import Day10 from '../views/day10/Day10.vue'
 import Day11 from '../views/day11/Day11.vue'
 import Day12 from '../views/day12/Day12.vue'
-import Day13 from '../views/day13/Day13.vue'
-import Day14 from '../views/day14/Day14.vue'
-import Day15 from '../views/day15/Day15.vue'
-import Day16 from '../views/day16/Day16.vue'
-import Day17 from '../views/day17/Day17.vue'
-import Day18 from '../views/day18/Day18.vue'
-import Day19 from '../views/day19/Day19.vue'
-import Day20 from '../views/day20/Day20.vue'
-import Day21 from '../views/day21/Day21.vue'
-import Day22 from '../views/day22/Day22.vue'
-import Day23 from '../views/day23/Day23.vue'
-import Day24 from '../views/day24/Day24.vue'
-import Day25 from '../views/day25/Day25.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -93,71 +80,6 @@ const router = createRouter({
       path: '/day12',
       name: 'day12',
       component: Day12
-    },
-    {
-      path: '/day13',
-      name: 'day13',
-      component: Day13
-    },
-    {
-      path: '/day14',
-      name: 'day14',
-      component: Day14
-    },
-    {
-      path: '/day15',
-      name: 'day15',
-      component: Day15
-    },
-    {
-      path: '/day16',
-      name: 'day16',
-      component: Day16
-    },
-    {
-      path: '/day17',
-      name: 'day17',
-      component: Day17
-    },
-    {
-      path: '/day18',
-      name: 'day18',
-      component: Day18
-    },
-    {
-      path: '/day19',
-      name: 'day19',
-      component: Day19
-    },
-    {
-      path: '/day20',
-      name: 'day20',
-      component: Day20
-    },
-    {
-      path: '/day21',
-      name: 'day21',
-      component: Day21
-    },
-    {
-      path: '/day22',
-      name: 'day22',
-      component: Day22
-    },
-    {
-      path: '/day23',
-      name: 'day23',
-      component: Day23
-    },
-    {
-      path: '/day24',
-      name: 'day24',
-      component: Day24
-    },
-    {
-      path: '/day25',
-      name: 'day25',
-      component: Day25
     }
   ]
 })
