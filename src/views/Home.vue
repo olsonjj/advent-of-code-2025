@@ -48,7 +48,7 @@
           </svg>
         </div>
 
-        <div class="grid grid-cols-5 gap-4 gap-x-4">
+        <div class="grid grid-cols-4 gap-4 gap-x-4">
           <DayButton
             v-for="day in 12"
             :key="day"
