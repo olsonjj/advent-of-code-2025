@@ -148,20 +148,6 @@ function place(
 }
 
 /**
- * Remove a present from the grid
- */
-function unplace(
-  grid: number[][],
-  present: Present,
-  startRow: number,
-  startCol: number
-): void {
-  for (const [dr, dc] of present.cells) {
-    grid[startRow + dr][startCol + dc] = 0
-  }
-}
-
-/**
  * Dancing Links node for Algorithm X
  */
 class DLXNode {
@@ -172,135 +158,6 @@ class DLXNode {
   column: DLXNode | null = null
   size = 0 // Only used for column headers
   isPrimary = false // Only meaningful on column headers
-}
-
-/**
- * Solve exact cover problem using Algorithm X with Dancing Links
- */
-function solveExactCover(matrix: number[][]): boolean {
-  if (matrix.length === 0) return true
-  if (matrix[0].length === 0) return true
-  
-  const numCols = matrix[0].length
-  const header = new DLXNode()
-  const columns: DLXNode[] = []
-  
-  // Create column headers
-  for (let i = 0; i < numCols; i++) {
-    const col = new DLXNode()
-    col.column = col
-    col.size = 0
-    columns.push(col)
-    
-    // Link to header
-    col.left = header.left
-    col.right = header
-    header.left.right = col
-    header.left = col
-  }
-  
-  // Add rows
-  for (let i = 0; i < matrix.length; i++) {
-    let prev: DLXNode | null = null
-    
-    for (let j = 0; j < numCols; j++) {
-      if (matrix[i][j] === 1) {
-        const node = new DLXNode()
-        node.column = columns[j]
-        columns[j].size++
-        
-        // Link vertically
-        node.up = columns[j].up
-        node.down = columns[j]
-        columns[j].up.down = node
-        columns[j].up = node
-        
-        // Link horizontally
-        if (prev === null) {
-          node.left = node
-          node.right = node
-        } else {
-          node.left = prev
-          node.right = prev.right
-          prev.right.left = node
-          prev.right = node
-        }
-        
-        prev = node
-      }
-    }
-  }
-  
-  // Cover column
-  function cover(col: DLXNode): void {
-    col.right.left = col.left
-    col.left.right = col.right
-    
-    for (let row = col.down; row !== col; row = row.down) {
-      for (let node = row.right; node !== row; node = node.right) {
-        node.down.up = node.up
-        node.up.down = node.down
-        node.column!.size--
-      }
-    }
-  }
-  
-  // Uncover column
-  function uncover(col: DLXNode): void {
-    for (let row = col.up; row !== col; row = row.up) {
-      for (let node = row.left; node !== row; node = node.left) {
-        node.column!.size++
-        node.down.up = node
-        node.up.down = node
-      }
-    }
-    
-    col.right.left = col
-    col.left.right = col
-  }
-  
-  // Search
-  function search(): boolean {
-    if (header.right === header) {
-      return true // All columns covered
-    }
-    
-    // Choose column with minimum size (S heuristic)
-    let col = header.right
-    for (let c = header.right; c !== header; c = c.right) {
-      if (c.size < col.size) {
-        col = c
-      }
-    }
-    
-    if (col.size === 0) {
-      return false // Column cannot be covered
-    }
-    
-    cover(col)
-    
-    for (let row = col.down; row !== col; row = row.down) {
-      // Cover all columns in this row
-      for (let node = row.right; node !== row; node = node.right) {
-        cover(node.column!)
-      }
-      
-      // Recursively search
-      if (search()) {
-        return true
-      }
-      
-      // Uncover all columns in this row
-      for (let node = row.left; node !== row; node = node.left) {
-        uncover(node.column!)
-      }
-    }
-    
-    uncover(col)
-    return false
-  }
-  
-  return search()
 }
 
 /**
@@ -682,7 +539,7 @@ export function solvePart1(input: string): number {
   return fittableRegions
 }
 
-export function solvePart2(input: string): number {
+export function solvePart2(_input: string): number {
   // Part 2 not yet available
   return 0
 }

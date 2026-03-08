@@ -36,143 +36,6 @@ function parseLine(line: string): Machine {
 }
 
 /**
- * Solve a system of linear equations over GF(2) using Gaussian elimination.
- * Returns the solution with minimum number of 1s, or null if no solution exists.
- */
-function solveGF2(numLights: number, buttons: number[][], target: boolean[]): number[] | null {
-  const numButtons = buttons.length
-  
-  // Build augmented matrix [A | b] where:
-  // - A[i][j] = 1 if button j toggles light i
-  // - b[i] = target state of light i
-  const matrix: number[][] = []
-  
-  for (let i = 0; i < numLights; i++) {
-    const row = Array(numButtons + 1).fill(0)
-    row[numButtons] = target[i] ? 1 : 0 // Augmented column
-    
-    for (let j = 0; j < numButtons; j++) {
-      if (buttons[j].includes(i)) {
-        row[j] = 1
-      }
-    }
-    
-    matrix.push(row)
-  }
-  
-  // Gaussian elimination to reduced row echelon form
-  let pivot = 0
-  const pivotCols: number[] = [] // Track which columns have pivots
-  
-  for (let col = 0; col < numButtons && pivot < numLights; col++) {
-    // Find a row with a 1 in this column (at or below current pivot)
-    let pivotRow = -1
-    for (let row = pivot; row < numLights; row++) {
-      if (matrix[row][col] === 1) {
-        pivotRow = row
-        break
-      }
-    }
-    
-    if (pivotRow === -1) continue // No pivot in this column
-    
-    // Swap rows if needed
-    if (pivotRow !== pivot) {
-      [matrix[pivot], matrix[pivotRow]] = [matrix[pivotRow], matrix[pivot]]
-    }
-    
-    pivotCols.push(col)
-    
-    // Eliminate all other 1s in this column
-    for (let row = 0; row < numLights; row++) {
-      if (row !== pivot && matrix[row][col] === 1) {
-        // XOR this row with the pivot row
-        for (let c = 0; c <= numButtons; c++) {
-          matrix[row][c] ^= matrix[pivot][c]
-        }
-      }
-    }
-    
-    pivot++
-  }
-  
-  // Check for inconsistency (row with all zeros except augmented column)
-  for (let row = 0; row < numLights; row++) {
-    let allZero = true
-    for (let col = 0; col < numButtons; col++) {
-      if (matrix[row][col] !== 0) {
-        allZero = false
-        break
-      }
-    }
-    if (allZero && matrix[row][numButtons] === 1) {
-      return null // No solution
-    }
-  }
-  
-  // Free variables are those not in pivotCols
-  const freeVars: number[] = []
-  const isPivot = Array(numButtons).fill(false)
-  for (const col of pivotCols) {
-    isPivot[col] = true
-  }
-  for (let i = 0; i < numButtons; i++) {
-    if (!isPivot[i]) {
-      freeVars.push(i)
-    }
-  }
-  
-  // If no free variables, we have a unique solution
-  if (freeVars.length === 0) {
-    const solution = Array(numButtons).fill(0)
-    for (let i = 0; i < pivotCols.length; i++) {
-      solution[pivotCols[i]] = matrix[i][numButtons]
-    }
-    return solution
-  }
-  
-  // Try all combinations of free variables to find minimum
-  let minPresses = Infinity
-  let bestSolution: number[] | null = null
-  
-  const numCombinations = 1 << freeVars.length
-  
-  for (let combo = 0; combo < numCombinations; combo++) {
-    const solution = Array(numButtons).fill(0)
-    
-    // Set free variables according to combo
-    for (let i = 0; i < freeVars.length; i++) {
-      solution[freeVars[i]] = (combo >> i) & 1
-    }
-    
-    // Calculate dependent variables
-    for (let i = 0; i < pivotCols.length; i++) {
-      const col = pivotCols[i]
-      let val = matrix[i][numButtons]
-      
-      // XOR with all free variable contributions
-      for (let j = 0; j < numButtons; j++) {
-        if (j !== col) {
-          val ^= (matrix[i][j] * solution[j])
-        }
-      }
-      
-      solution[col] = val
-    }
-    
-    // Count presses
-    const presses = solution.reduce((sum, x) => sum + x, 0)
-    
-    if (presses < minPresses) {
-      minPresses = presses
-      bestSolution = solution
-    }
-  }
-  
-  return bestSolution
-}
-
-/**
  * Solve Part 1 using BFS - simpler and more reliable than Gaussian elimination
  */
 function solveMachine(machine: Machine): number {
@@ -248,7 +111,7 @@ function parseJoltageRequirements(line: string): number[] {
  * - Detect forced moves
  * - Detect impossibility early
  */
-function solveJoltageSystem(numCounters: number, buttons: number[][], targets: number[]): number {
+function solveJoltageSystem(_numCounters: number, buttons: number[][], targets: number[]): number {
   let best = Infinity
   
   function solve(state: number[], sofar: number, availableButtons: number[][]): void {
@@ -388,7 +251,7 @@ export function solvePart2(input: string): number {
       totalPresses += presses
     } catch (e) {
       // If solver times out or fails, skip this machine
-      console.error('Failed to solve machine:', e.message)
+      console.error('Failed to solve machine:', e instanceof Error ? e.message : String(e))
       return 0 // Return placeholder
     }
   }
